@@ -6,6 +6,7 @@ Compare two names for similarity using RapidFuzz for fuzzy matching and
 NickNamer for nickname handling.
 """
 import argparse
+from typing import Tuple
 from rapidfuzz import fuzz
 from nicknames import NickNamer
 
@@ -15,7 +16,7 @@ nn = NickNamer()
 # default threshold for acceptable alias match
 THRESHOLD = 80
 
-def compute_score(name1: str, name2: str) -> tuple[int, int]:
+def compute_score(name1: str, name2: str) -> Tuple[int, int]:
     """
     Return a similarity score (0-100) between name1 and name2.
     If name2 is a known nickname of name1 or vice versa, return 100.
