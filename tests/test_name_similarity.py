@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -23,3 +24,14 @@ def test_dissimilar_names_below_threshold():
     first, last = compute_score("Alice Johnson", "Zach Smith")
     assert first < THRESHOLD
     assert last < THRESHOLD
+
+
+def test_cli_requires_full_names():
+    script = ROOT / "name_similarity.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "compare", "John", "Doe"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "Both names must include first and last name" in result.stderr

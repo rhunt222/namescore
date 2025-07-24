@@ -23,12 +23,15 @@ pip install pytest
 
 ## Usage
 
-The main entry point is `name_similarity.py`. Run it from the command line with
-two names to compare:
+The main entry point is `name_similarity.py`. Use the `compare` command with
+both names quoted to ensure each is parsed correctly:
 
 ```bash
-python name_similarity.py "John Smith" "Johnny Smith"
+python name_similarity.py compare "John Smith" "Johnny Smith"
 ```
+
+If either argument omits a first or last name, the command exits with an
+error message.
 
 The script prints similarity scores for the first and last names and indicates
 whether the alias name meets the default acceptance threshold.
