@@ -14,6 +14,35 @@ nn = NickNamer()
 # default threshold for acceptable alias match
 THRESHOLD = 80
 
+# list of sample name pairs for the "samples" command
+SAMPLES = [
+    ("Robert Smith", "Bob Smith"),
+    ("William Johnson", "Bill Johnson"),
+    ("James Brown", "Jim Brown"),
+    ("John Wilson", "Jonathan Wilson"),
+    ("Margaret Taylor", "Maggie Taylor"),
+    ("Elizabeth Thomas", "Liz Thomas"),
+    ("Jennifer White", "Jen White"),
+    ("Christopher Harris", "Chris Harris"),
+    ("Patricia Martin", "Patty Martin"),
+    ("Charles Thompson", "Charlie Thompson"),
+    ("Michael Garcia", "Mike Garcia"),
+    ("Steven Martinez", "Steve Martinez"),
+    ("Barbara Robinson", "Barb Robinson"),
+    ("Richard Clark", "Rick Clark"),
+    ("Deborah Rodriguez", "Debby Rodriguez"),
+    ("Anthony Lewis", "Tony Lewis"),
+    ("Daniel Lee", "Dan Lee"),
+    ("Joseph Walker", "Joe Walker"),
+    ("Susan Hall", "Sue Hall"),
+    ("Andrew Allen", "Andy Allen"),
+    ("Matthew Young", "Matt Young"),
+    ("Alexander King", "Alex King"),
+    ("Nicholas Wright", "Nick Wright"),
+    ("Benjamin Scott", "Ben Scott"),
+    ("Joshua Green", "Josh Green"),
+]
+
 def compute_score(name1: str, name2: str) -> tuple[int, int]:
     """Compute the similarity between two names.
 
@@ -78,6 +107,10 @@ def main():
     compare_parser.add_argument("name1", help="First full name in quotes")
     compare_parser.add_argument("name2", help="Second full name in quotes")
 
+    subparsers.add_parser(
+        "samples", help="Display scores for a list of sample name pairs"
+    )
+
     args = parser.parse_args()
 
     if args.command == "compare":
@@ -99,6 +132,10 @@ def main():
             print("Alias is an acceptable match based on first name.")
         else:
             print("Alias first name too different; manual verification needed.")
+    elif args.command == "samples":
+        for name1, name2 in SAMPLES:
+            first_score, last_score = compute_score(name1, name2)
+            print(f"{name1} vs {name2} -> first: {first_score}, last: {last_score}")
 
 
 if __name__ == "__main__":

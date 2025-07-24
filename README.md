@@ -30,6 +30,13 @@ both names quoted to ensure each is parsed correctly:
 python name_similarity.py compare "John Smith" "Johnny Smith"
 ```
 
+For a quick demonstration of how the scoring works, run the `samples`
+command to print scores for a collection of common name pairs:
+
+```bash
+python name_similarity.py samples
+```
+
 If either argument omits a first or last name, the command exits with an
 error message.
 
