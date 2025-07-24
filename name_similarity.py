@@ -2,8 +2,7 @@
 """
 name_similarity.py
 
-Compare two names for similarity using RapidFuzz for fuzzy matching and
-NickNamer for nickname handling.
+NickNamer
 """
 import argparse
 from rapidfuzz import fuzz
