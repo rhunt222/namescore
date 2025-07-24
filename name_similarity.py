@@ -17,10 +17,27 @@ nn = NickNamer()
 THRESHOLD = 80
 
 def compute_score(name1: str, name2: str) -> Tuple[int, int]:
-    """
-    Return a similarity score (0-100) between name1 and name2.
-    If name2 is a known nickname of name1 or vice versa, return 100.
-    Otherwise use RapidFuzz token_set_ratio.
+    """Compute the similarity between two names.
+
+    Parameters
+    ----------
+    name1, name2 : str
+        Names to compare.
+
+    Returns
+    -------
+    Tuple[int, int]
+        ``(first_score, last_score)`` where each score ranges from ``0`` to ``100``.
+
+    Notes
+    -----
+    ``first_score`` evaluates the first names and incorporates nickname
+    recognition. If the second name is a known nickname of the first (or vice
+    versa) it yields ``100``; otherwise it falls back to
+    :func:`~rapidfuzz.fuzz.token_set_ratio`.
+    ``last_score`` compares the last names with ``token_set_ratio`` when both
+    last names are present. If one of the names is missing a last component, the
+    score is ``0``.
     """
     # split into tokens for first/last names
     parts1 = name1.strip().split()
