@@ -2,7 +2,8 @@
 """
 name_similarity.py
 
-Compare two names for similarity, using RapidFuzz for fuzzy matching and NickNamer for nickname handling.
+Compare two names for similarity using RapidFuzz for fuzzy matching and
+NickNamer for nickname handling.
 """
 import argparse
 from rapidfuzz import fuzz
@@ -29,11 +30,11 @@ def compute_score(name1: str, name2: str) -> tuple[int, int]:
     last2 = parts2[-1] if len(parts2) > 1 else ""
 
     # compute first-name score (with nickname support)
-    nick_set_1 = {nick.lower() for nick in nn.nicknames_of(first1)}
+    nick_set_1 = {nick.lower() for nick in (nn.nicknames_of(first1) or [])}
     if first2.lower() in nick_set_1:
         first_score = 100
     else:
-        nick_set_2 = {nick.lower() for nick in nn.nicknames_of(first2)}
+        nick_set_2 = {nick.lower() for nick in (nn.nicknames_of(first2) or [])}
         if first1.lower() in nick_set_2:
             first_score = 100
         else:
