@@ -9,16 +9,22 @@ recognize common nicknames. The project also includes a small test suite using
 
 ## Installation
 
-Install the required dependencies:
+Install the package and its dependencies using `pip`:
 
 ```bash
-pip install rapidfuzz nicknames
+pip install -e .
 ```
 
-For running the tests you will also need `pytest`:
+For a regular install omit the `-e` flag:
 
 ```bash
-pip install pytest
+pip install .
+```
+
+For running the tests you can install the optional test dependencies:
+
+```bash
+pip install -e .[test]
 ```
 
 ## Usage
