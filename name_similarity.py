@@ -41,6 +41,12 @@ SAMPLES = [
     ("Nicholas Wright", "Nick Wright"),
     ("Benjamin Scott", "Ben Scott"),
     ("Joshua Green", "Josh Green"),
+    # similar first names but different last names
+    ("Robert Smith", "Bob Johnson"),
+    ("Jennifer White", "Jen Brown"),
+    ("Michael Garcia", "Mike Hernandez"),
+    # entirely different first and last names
+    ("Aaron Turner", "Eric Miller"),
 ]
 
 def compute_score(name1: str, name2: str) -> tuple[int, int]:
