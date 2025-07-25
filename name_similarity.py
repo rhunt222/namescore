@@ -46,9 +46,16 @@ SAMPLES = [
     ("Hiroshi Tanaka", "Hiro Tanaka"),
     ("Wei Zhang", "William Zhang"),
     ("Santiago Ramirez", "Santi Ramirez"),
+    # examples with middle names or compound surnames
+    ("John Paul Jones", "John Jones"),
+    ("Gabriel Garcia Marquez", "Gabriel Marquez"),
+    ("Maria del Carmen Fernandez", "Maria Fernandez"),
+    ("Juan Carlos de la Vega", "Juan de la Vega"),
 ]
 
-def compute_score(name1: str, name2: str) -> tuple[int, int]:
+def compute_score(
+    name1: str, name2: str, *, ignore_middle: bool = False
+) -> tuple[int, int]:
     """Compute the similarity between two names.
 
     Parameters
@@ -70,14 +77,29 @@ def compute_score(name1: str, name2: str) -> tuple[int, int]:
     ``last_score`` compares the last names with ``token_set_ratio`` when both
     last names are present. If one of the names is missing a last component, the
     score is ``0``.
+
+    The function attempts to handle middle names and multi-part surnames. When a
+    name contains exactly two tokens, the second token is treated as the last
+    name. For longer names the default behaviour is to treat everything after
+    the first token as the last name, allowing for compound surnames. Set
+    ``ignore_middle=True`` to mimic the old behaviour of using only the final
+    token as the surname.
     """
     # split into tokens for first/last names
     parts1 = name1.strip().split()
     parts2 = name2.strip().split()
     first1 = parts1[0] if parts1 else name1
     first2 = parts2[0] if parts2 else name2
-    last1 = parts1[-1] if len(parts1) > 1 else ""
-    last2 = parts2[-1] if len(parts2) > 1 else ""
+
+    def _extract_last(parts: list[str]) -> str:
+        if len(parts) < 2:
+            return ""
+        if len(parts) == 2 or ignore_middle:
+            return parts[-1]
+        return " ".join(parts[1:])
+
+    last1 = _extract_last(parts1)
+    last2 = _extract_last(parts2)
 
     # compute first-name score (with nickname support)
     nick_set_1 = {nick.lower() for nick in (nn.nicknames_of(first1) or [])}
@@ -108,10 +130,18 @@ def _print_comparison(name1: str, name2: str) -> None:
     """
     parts1 = name1.strip().split()
     parts2 = name2.strip().split()
-    first1 = parts1[0]
-    first2 = parts2[0]
-    last1 = parts1[-1]
-    last2 = parts2[-1]
+    first1 = parts1[0] if parts1 else name1
+    first2 = parts2[0] if parts2 else name2
+
+    def _extract_last(parts: list[str]) -> str:
+        if len(parts) < 2:
+            return ""
+        if len(parts) == 2:
+            return parts[-1]
+        return " ".join(parts[1:])
+
+    last1 = _extract_last(parts1)
+    last2 = _extract_last(parts2)
 
     first_score, last_score = compute_score(name1, name2)
     print(f"First-name similarity ({first1} vs {first2}): {first_score}")
