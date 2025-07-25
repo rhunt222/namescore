@@ -1,0 +1,11 @@
+[project]
+name = "namescore"
+version = "0.1.0"
+description = "Simple name similarity tool"
+
+[project.dependencies]
+rapidfuzz = "*"
+nicknames = "*"
+
+[project.optional-dependencies]
+test = ["pytest"]
