@@ -46,4 +46,6 @@ def test_sample_command_outputs_pairs():
     )
     assert result.returncode == 0
     lines = [line for line in result.stdout.splitlines() if line.strip()]
+    messages = [line for line in lines if "Alias" in line]
+    assert len(messages) >= 25
     assert len(lines) >= 25

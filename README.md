@@ -37,6 +37,15 @@ command to print scores for a collection of common name pairs:
 python name_similarity.py samples
 ```
 
+The command prints information for each pair similar to running
+`compare` on that pair individually. A short excerpt:
+
+```text
+Robert Smith vs Bob Smith
+First-name similarity (Robert vs Bob): 100
+Last-name similarity (Smith vs Smith): 100
+Alias is an acceptable match based on first name.
+
 If either argument omits a first or last name, the command exits with an
 error message.
 
