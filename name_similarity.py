@@ -14,6 +14,35 @@ nn = NickNamer()
 # default threshold for acceptable alias match
 THRESHOLD = 80
 
+# list of sample name pairs for the "samples" command
+SAMPLES = [
+    ("Robert Smith", "Bob Smith"),
+    ("William Johnson", "Bill Johnson"),
+    ("James Brown", "Jim Brown"),
+    ("John Wilson", "Jonathan Wilson"),
+    ("Margaret Taylor", "Maggie Taylor"),
+    ("Elizabeth Thomas", "Liz Thomas"),
+    ("Jennifer White", "Jen White"),
+    ("Christopher Harris", "Chris Harris"),
+    ("Patricia Martin", "Patty Martin"),
+    ("Charles Thompson", "Charlie Thompson"),
+    ("Michael Garcia", "Mike Garcia"),
+    ("Steven Martinez", "Steve Martinez"),
+    ("Barbara Robinson", "Barb Robinson"),
+    ("Richard Clark", "Rick Clark"),
+    ("Deborah Rodriguez", "Debby Rodriguez"),
+    ("Anthony Lewis", "Tony Lewis"),
+    ("Daniel Lee", "Dan Lee"),
+    ("Joseph Walker", "Joe Walker"),
+    ("Susan Hall", "Sue Hall"),
+    ("Andrew Allen", "Andy Allen"),
+    ("Matthew Young", "Matt Young"),
+    ("Alexander King", "Alex King"),
+    ("Nicholas Wright", "Nick Wright"),
+    ("Benjamin Scott", "Ben Scott"),
+    ("Joshua Green", "Josh Green"),
+]
+
 def compute_score(name1: str, name2: str) -> tuple[int, int]:
     """Compute the similarity between two names.
 
@@ -66,6 +95,28 @@ def compute_score(name1: str, name2: str) -> tuple[int, int]:
     return first_score, last_score
 
 
+def _print_comparison(name1: str, name2: str) -> None:
+    """Print comparison results for ``name1`` and ``name2``.
+
+    This replicates the output of the ``compare`` CLI command and is
+    reused by the ``samples`` command for each pair of names.
+    """
+    parts1 = name1.strip().split()
+    parts2 = name2.strip().split()
+    first1 = parts1[0]
+    first2 = parts2[0]
+    last1 = parts1[-1]
+    last2 = parts2[-1]
+
+    first_score, last_score = compute_score(name1, name2)
+    print(f"First-name similarity ({first1} vs {first2}): {first_score}")
+    print(f"Last-name similarity ({last1} vs {last2}): {last_score}")
+    if first_score >= THRESHOLD:
+        print("Alias is an acceptable match based on first name.")
+    else:
+        print("Alias first name too different; manual verification needed.")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Compare two names and output a similarity score (0-100)"
@@ -78,27 +129,22 @@ def main():
     compare_parser.add_argument("name1", help="First full name in quotes")
     compare_parser.add_argument("name2", help="Second full name in quotes")
 
+    subparsers.add_parser(
+        "samples", help="Display scores for a list of sample name pairs"
+    )
+
     args = parser.parse_args()
 
     if args.command == "compare":
         if len(args.name1.split()) < 2 or len(args.name2.split()) < 2:
             compare_parser.error("Both names must include first and last name.")
 
-        parts1 = args.name1.strip().split()
-        parts2 = args.name2.strip().split()
-        first1 = parts1[0]
-        first2 = parts2[0]
-        last1 = parts1[-1]
-        last2 = parts2[-1]
-
-        first_score, last_score = compute_score(args.name1, args.name2)
-        print(f"First-name similarity ({first1} vs {first2}): {first_score}")
-        print(f"Last-name similarity ({last1} vs {last2}): {last_score}")
-
-        if first_score >= THRESHOLD:
-            print("Alias is an acceptable match based on first name.")
-        else:
-            print("Alias first name too different; manual verification needed.")
+        _print_comparison(args.name1, args.name2)
+    elif args.command == "samples":
+        for name1, name2 in SAMPLES:
+            print(f"{name1} vs {name2}")
+            _print_comparison(name1, name2)
+            print()
 
 
 if __name__ == "__main__":

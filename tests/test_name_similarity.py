@@ -35,3 +35,16 @@ def test_cli_requires_full_names():
     )
     assert result.returncode != 0
     assert "Both names must include first and last name" in result.stderr
+
+
+def test_sample_command_outputs_pairs():
+    script = ROOT / "name_similarity.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "samples"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
+    messages = [line for line in lines if "Alias" in line]
+    assert len(messages) >= 25
