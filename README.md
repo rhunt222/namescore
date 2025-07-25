@@ -31,8 +31,7 @@ python name_similarity.py compare "John Smith" "Johnny Smith"
 ```
 
 For a quick demonstration of how the scoring works, run the `samples`
-command to see a collection of preset name comparisons along with the
-same match message displayed by the `compare` command:
+command to print scores for a collection of common name pairs:
 
 ```bash
 python name_similarity.py samples
@@ -46,7 +45,6 @@ Robert Smith vs Bob Smith
 First-name similarity (Robert vs Bob): 100
 Last-name similarity (Smith vs Smith): 100
 Alias is an acceptable match based on first name.
-```
 
 If either argument omits a first or last name, the command exits with an
 error message.

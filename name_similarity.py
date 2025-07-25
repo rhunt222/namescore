@@ -37,6 +37,15 @@ SAMPLES = [
     ("Nicholas Wright", "Nick Wright"),
     ("Benjamin Scott", "Ben Scott"),
     ("Joshua Green", "Josh Green"),
+    # similar first names but different last names
+    ("Robert Smith", "Bob Johnson"),
+    ("Jennifer White", "Jen Brown"),
+    ("Michael Garcia", "Mike Hernandez"),
+    # entirely different first and last names
+    ("Aaron Turner", "Eric Miller"),
+    ("Hiroshi Tanaka", "Hiro Tanaka"),
+    ("Wei Zhang", "William Zhang"),
+    ("Santiago Ramirez", "Santi Ramirez"),
 ]
 
 def compute_score(name1: str, name2: str) -> tuple[int, int]:
@@ -141,6 +150,25 @@ def main():
             print(f"{name1} vs {name2}")
             _print_comparison(name1, name2)
             print()
+        parts1 = args.name1.strip().split()
+        parts2 = args.name2.strip().split()
+        first1 = parts1[0]
+        first2 = parts2[0]
+        last1 = parts1[-1]
+        last2 = parts2[-1]
+
+        first_score, last_score = compute_score(args.name1, args.name2)
+        print(f"First-name similarity ({first1} vs {first2}): {first_score}")
+        print(f"Last-name similarity ({last1} vs {last2}): {last_score}")
+
+        if first_score >= THRESHOLD:
+            print("Alias is an acceptable match based on first name.")
+        else:
+            print("Alias first name too different; manual verification needed.")
+    elif args.command == "samples":
+        for name1, name2 in SAMPLES:
+            first_score, last_score = compute_score(name1, name2)
+            print(f"{name1} vs {name2} -> first: {first_score}, last: {last_score}")
 
 
 if __name__ == "__main__":
