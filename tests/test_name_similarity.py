@@ -26,6 +26,18 @@ def test_dissimilar_names_below_threshold():
     assert last < THRESHOLD
 
 
+def test_middle_name_handling():
+    first, last = compute_score("John Paul Jones", "John Jones")
+    assert first == 100
+    assert last == 100
+
+
+def test_compound_last_name():
+    first, last = compute_score("Gabriel Garcia Marquez", "Gabriel Marquez")
+    assert first == 100
+    assert last == 100
+
+
 def test_cli_requires_full_names():
     script = ROOT / "name_similarity.py"
     result = subprocess.run(
