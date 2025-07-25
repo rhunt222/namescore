@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-name_similarity.py
-
-NickNamer
-"""
+"""Utilities for comparing personal names with nickname support."""
 import argparse
 from rapidfuzz import fuzz
 from nicknames import NickNamer
